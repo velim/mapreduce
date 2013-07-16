@@ -39,7 +39,7 @@ public class TwitterCount {
 			super.configure(job);
 			cnt = Integer.parseInt(job.get("cnt"));
 		}
-
+		
 		public void reduce(Text key, Iterator<IntWritable> values,
 				OutputCollector<Text, IntWritable> output, Reporter reporter)
 				throws IOException {
@@ -47,6 +47,7 @@ public class TwitterCount {
 			while (values.hasNext()) {
 				sum += values.next().get();
 			}
+			System.out.println(key +" : "+ sum);
 			if (sum >= cnt)
 				output.collect(key, new IntWritable(sum));
 		}
@@ -63,7 +64,7 @@ public class TwitterCount {
 		conf.setCombinerClass(Reduce.class);
 		conf.setReducerClass(Reduce.class);
 
-		conf.setNumMapTasks(10);
+		//conf.setNumMapTasks(10);
 
 		conf.setInputFormat(TextInputFormat.class);
 		conf.setOutputFormat(TextOutputFormat.class);
