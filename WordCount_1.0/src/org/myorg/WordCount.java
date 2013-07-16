@@ -40,8 +40,7 @@ import org.apache.hadoop.mapred.*;
 	
 	     public static void main(String[] args) throws Exception { 
 	      JobConf conf = new JobConf(WordCount.class); 
-	      conf.setJobName("wordcountW"); 
-	
+	      conf.setJobName("wordcountW");
 	      conf.setOutputKeyClass(Text.class); 
 	      conf.setOutputValueClass(IntWritable.class); 
 	
