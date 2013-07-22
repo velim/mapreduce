@@ -31,15 +31,39 @@ public class TwitterCount {
 
 	public static class Reduce extends MapReduceBase implements
 			Reducer<Text, IntWritable, Text, IntWritable> {
-		
+
 		private int cnt;
-		
+
 		@Override
 		public void configure(JobConf job) {
 			super.configure(job);
 			cnt = Integer.parseInt(job.get("cnt"));
 		}
-		
+
+		public void reduce(Text key, Iterator<IntWritable> values,
+				OutputCollector<Text, IntWritable> output, Reporter reporter)
+				throws IOException {
+			int sum = 0;
+			int tmp = 0;
+			while (values.hasNext()) {
+				sum += values.next().get();
+				tmp++;
+			}
+			System.out.println(this.toString() + " : " + key + " : " + sum);
+			System.out.println(this.toString() + " : " + key + " : " + tmp);
+			if (sum >= cnt)
+				output.collect(key, new IntWritable(sum));
+		}
+	}
+
+	public static class Combiner extends MapReduceBase implements
+			Reducer<Text, IntWritable, Text, IntWritable> {
+
+		@Override
+		public void configure(JobConf job) {
+			super.configure(job);
+		}
+
 		public void reduce(Text key, Iterator<IntWritable> values,
 				OutputCollector<Text, IntWritable> output, Reporter reporter)
 				throws IOException {
@@ -47,9 +71,8 @@ public class TwitterCount {
 			while (values.hasNext()) {
 				sum += values.next().get();
 			}
-			System.out.println(key +" : "+ sum);
-			if (sum >= cnt)
-				output.collect(key, new IntWritable(sum));
+
+			output.collect(key, new IntWritable(sum));
 		}
 	}
 
@@ -59,12 +82,12 @@ public class TwitterCount {
 
 		conf.setOutputKeyClass(Text.class);
 		conf.setOutputValueClass(IntWritable.class);
-		
+
 		conf.setMapperClass(Map.class);
-		conf.setCombinerClass(Reduce.class);
+		conf.setCombinerClass(Combiner.class);
 		conf.setReducerClass(Reduce.class);
 
-		//conf.setNumMapTasks(10);
+		// conf.setNumMapTasks(10);
 
 		conf.setInputFormat(TextInputFormat.class);
 		conf.setOutputFormat(TextOutputFormat.class);
