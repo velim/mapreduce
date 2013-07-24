@@ -87,7 +87,8 @@ public class TwitterCount {
 		conf.setCombinerClass(Combiner.class);
 		conf.setReducerClass(Reduce.class);
 
-		// conf.setNumMapTasks(10);
+		conf.setNumMapTasks(10);
+		conf.setNumReduceTasks(1);
 
 		conf.setInputFormat(TextInputFormat.class);
 		conf.setOutputFormat(TextOutputFormat.class);
