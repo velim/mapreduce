@@ -44,13 +44,13 @@ public class TwitterCount {
 				OutputCollector<Text, IntWritable> output, Reporter reporter)
 				throws IOException {
 			int sum = 0;
-			int tmp = 0;
+			//int tmp = 0;
 			while (values.hasNext()) {
 				sum += values.next().get();
-				tmp++;
+				//tmp++;
 			}
-			System.out.println(this.toString() + " : " + key + " : " + sum);
-			System.out.println(this.toString() + " : " + key + " : " + tmp);
+			//System.out.println(this.toString() + " : " + key + " : " + sum);
+			//System.out.println(this.toString() + " : " + key + " : " + tmp);
 			if (sum >= cnt)
 				output.collect(key, new IntWritable(sum));
 		}
@@ -88,7 +88,7 @@ public class TwitterCount {
 		conf.setReducerClass(Reduce.class);
 
 		conf.setNumMapTasks(10);
-		conf.setNumReduceTasks(1);
+		conf.setNumReduceTasks(3);
 
 		conf.setInputFormat(TextInputFormat.class);
 		conf.setOutputFormat(TextOutputFormat.class);
