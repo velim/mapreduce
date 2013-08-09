@@ -23,7 +23,7 @@ public class TwitterParser {
 			while (itr.hasNext()) {
 				JsonObject tag = itr.next().asObject();
 				tags.add(tag.get("text").asString());
-				System.out.println(tag.get("text").asString());
+				//System.out.println(tag.get("text").asString());
 			}
 			
 		} catch (Exception e) {
